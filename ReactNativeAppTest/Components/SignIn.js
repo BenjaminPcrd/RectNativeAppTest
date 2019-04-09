@@ -9,6 +9,7 @@ class SignIn extends React.Component {
         <TextInput placeholder='Password' secureTextEntry={true} textContentType='password'/>
         <Button title='Connect' onPress={() => {}}/>
       </View>
+
     )
     // () => {} <=> function() {}*
   }
@@ -17,7 +18,7 @@ class SignIn extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
   },
