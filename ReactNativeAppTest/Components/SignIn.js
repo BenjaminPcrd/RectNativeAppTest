@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, TextInput, Button, StyleSheet } from 'react-native'
 
-class Search extends React.Component {
+class SignIn extends React.Component {
   render() { // render() {} <=> render = function() {}
     return (
       <View style={styles.container}>
@@ -23,4 +23,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Search
+export default SignIn
