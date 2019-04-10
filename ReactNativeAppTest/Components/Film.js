@@ -1,12 +1,35 @@
 import React from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native'
+import { getImageFromApi } from '../API/TMDBApi'
 
 class Film extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      isLoading: false
+    }
+  }
+
+  _displayLoading() {
+    if(this.state.isLoading) {
+      return(
+        <View style={styles.loading_container}>
+          <ActivityIndicator size='large'/>
+        </View>
+      )
+    }
+  }
+
   render() {
     const film = this.props.film
     return(
       <View style={styles.mainContainer}>
-        <Image style={styles.image} source={{uri: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + film.poster_path}}/>
+        <Image style={styles.image}
+          source={{uri: getImageFromApi(film.poster_path)}}
+          onLoadStart={() => this.setState({isLoading: true })}
+          onLoad={() => this.setState({isLoading: false }) }
+        />
+        {this._displayLoading()}
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.titleText}>{film.title}</Text>
@@ -61,6 +84,15 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
     fontSize: 14
+  },
+  loading_container: {
+    position: 'absolute',
+    left: -250,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 
