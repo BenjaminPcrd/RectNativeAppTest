@@ -6,6 +6,8 @@ import { getFilmsFromApiWithSearchText } from '../API/TMDBApi'
 class Search extends React.Component {
   constructor(props) {
     super(props)
+    this.page = 0
+    this.totalPages = 0
     this.searchedText = ""
     this.state = {
       films: [],
@@ -19,10 +21,12 @@ class Search extends React.Component {
       this.setState({
         isLoading: true
       })
-      getFilmsFromApiWithSearchText(this.searchedText).then(data => {
+      getFilmsFromApiWithSearchText(this.searchedText, this.page+1).then(data => {
         //console.log(data)
+        this.page = data.page
+        this.totalPages = data.total_pages
         this.setState({
-          films: data.results ,
+          films: this.state.films.concat(data.results),
           isLoading: false
         })
       });
@@ -39,6 +43,18 @@ class Search extends React.Component {
     }
   }
 
+  _searchFilms() {
+    this.page = 0
+    this.totalPages = 0
+    this.setState({
+      films: []
+    }, () => {
+      console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
+      this._loadFilms()
+    })
+
+  }
+
   render() {
     //console.log(this.state.isLoading)
     return(
@@ -47,19 +63,25 @@ class Search extends React.Component {
           style={styles.text_input}
           placeholder='Title'
           onChangeText={(text) => this.searchedText = text}
-          onSubmitEditing={() => this._loadFilms()}
+          onSubmitEditing={() => this._searchFilms()}
         />
         <View style={styles.button_container}>
           <Button
             title='Search'
             color='green'
-            onPress={() => this._loadFilms()}
+            onPress={() => this._searchFilms()}
           />
         </View>
         <FlatList
           data={this.state.films}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) => <Film film={item}/>}
+          onEndReachedTreshold={0.5}
+          onEndReached={() => {
+            if(this.page < this.totalPages) {
+              this._loadFilms()
+            }
+          }}
         />
         {this._displayLoading()}
       </View>
