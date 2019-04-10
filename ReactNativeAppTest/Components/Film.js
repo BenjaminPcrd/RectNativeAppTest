@@ -6,7 +6,7 @@ class Film extends React.Component {
     const film = this.props.film
     return(
       <View style={styles.mainContainer}>
-        <Image style={styles.image} source={{uri: "image"}}/>
+        <Image style={styles.image} source={{uri: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/" + film.poster_path}}/>
         <View style={styles.contentContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.titleText}>{film.title}</Text>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   image: {
     margin: 5,
-    backgroundColor: 'gray',
+    backgroundColor: 'grey',
     flex: 1
   },
   contentContainer: {
