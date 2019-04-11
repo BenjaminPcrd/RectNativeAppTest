@@ -49,9 +49,15 @@ class Search extends React.Component {
     this.setState({
       films: []
     }, () => {
-      console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
+      //console.log("Page : " + this.page + " / TotalPages : " + this.totalPages + " / Nombre de films : " + this.state.films.length)
       this._loadFilms()
     })
+
+  }
+
+  _displayDetailForFilm = (idFilm) => {
+    console.log("Display film with id " + idFilm)
+    this.props.navigation.navigate("FilmDetail", { idFilm: idFilm })
 
   }
 
@@ -75,7 +81,7 @@ class Search extends React.Component {
         <FlatList
           data={this.state.films}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => <Film film={item}/>}
+          renderItem={({item}) => <Film film={item} displayDetailForFilm={this._displayDetailForFilm} />}
           onEndReachedTreshold={0.5}
           onEndReached={() => {
             if(this.page < this.totalPages) {
@@ -92,7 +98,7 @@ class Search extends React.Component {
 const styles = StyleSheet.create({
   main_container: {
     flex: 1,
-    marginTop: 40
+    marginTop: 5
   },
   text_input: {
     marginRight: 10,
